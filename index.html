@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GitHub 專案查詢與推薦</title>
+    <link href="https://unpkg.com/boxicons/css/boxicons.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #283c45 0%, #1a1f24 100%);
+            color: #ffffff;
+            margin: 0;
+            padding: 0;
+            transition: background 0.5s;
+        }
+
+        header {
+            background-color: #61dafb;
+            color: #282c34;
+            padding: 15px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.5s;
+        }
+
+        nav {
+            display: flex;
+            justify-content: center;
+            margin: 20px;
+        }
+
+        nav button {
+            background: linear-gradient(135deg, #61dafb, #21a1f1);
+            border: none;
+            color: #282c34;
+            padding: 12px 25px;
+            margin: 0 8px;
+            cursor: pointer;
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+            transition: background 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+            font-size: 16px;
+            font-weight: bold;
+            letter-spacing: 0.5px;
+        }
+
+        nav button.active {
+            background: linear-gradient(135deg, #21a1f1, #1c88da);
+            color: white;
+        }
+
+        nav button:hover {
+            background: linear-gradient(135deg, #21a1f1, #0b79d1);
+            box-shadow: 0 8px 18px rgba(0, 0, 0, 0.3);
+            transform: translateY(-2px);
+        }
+
+        nav button:active {
+            background: linear-gradient(135deg, #1c88da, #1767b4);
+            transform: translateY(1px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .page {
+            display: none;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .card {
+            background-color: #2b2b2b;
+            border-radius: 10px;
+            margin: 20px auto;
+            padding: 20px;
+            width: 90%;
+            max-width: 800px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.3s, box-shadow 0.3s;
+        }
+
+        input[type="text"], select, input[type="number"] {
+            width: calc(100% - 24px);
+            padding: 12px 20px;
+            margin: 10px 0;
+            border: 1px solid #61dafb;
+            border-radius: 30px;
+            background-color: #333;
+            color: #ffffff;
+            font-size: 16px;
+            box-sizing: border-box;
+            transition: border-color 0.3s, background-color 0.3s;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        input[type="text"]:focus, select:focus, input[type="number"]:focus {
+            border-color: #21a1f1;
+            outline: none;
+            background-color: #444;
+        }
+
+        button, .settings-form button {
+            background: linear-gradient(135deg, #61dafb, #21a1f1);
+            padding: 12px 25px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 30px;
+            margin-top: 10px;
+            border: none;
+            cursor: pointer;
+            color: #282c34;
+            width: auto;
+            transition: background 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        button:hover, .settings-form button:hover {
+            background: linear-gradient(135deg, #21a1f1, #0b79d1);
+            box-shadow: 0 8px 18px rgba(0, 0, 0, 0.3);
+            transform: translateY(-2px);
+        }
+
+        button:active, .settings-form button:active {
+            background: linear-gradient(135deg, #1c88da, #1767b4);
+            transform: translateY(1px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .settings-form {
+            background-color: #2b2b2b;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px auto;
+            width: 90%;
+            max-width: 600px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.3s;
+        }
+
+        .settings-form label {
+            display: block;
+            margin-top: 10px;
+            color: #ffffff;
+        }
+
+        .settings-form select, .settings-form input[type="checkbox"] {
+            margin-top: 10px;
+            width: calc(100% - 22px);
+            padding: 10px;
+            border: 1px solid #61dafb;
+            border-radius: 30px;
+            background-color: #333;
+            color: #ffffff;
+            font-size: 16px;
+            box-sizing: border-box;
+            transition: border-color 0.3s, background-color 0.3s;
+        }
+
+        .settings-form input[type="checkbox"] {
+            width: auto;
+            margin-right: 10px;
+        }
+
+        .icon {
+            width: 24px;
+            height: 24px;
+            vertical-align: middle;
+            margin-right: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .settings-form p {
+            color: #61dafb;
+        }
+
+        .error {
+            color: #e74c3c;
+            font-size: 16px;
+        }
+
+        .project-item {
+            background-color: #3a3a3a;
+            border-radius: 8px;
+            margin: 10px 0;
+            padding: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .project-item a {
+            color: #61dafb;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .project-item a:hover {
+            text-decoration: underline;
+        }
+
+        .project-item span {
+            color: #888888;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>GitHub 專案查詢與推薦</h1>
+    </header>
+    <nav>
+        <button id="nav-search">搜尋專案</button>
+        <button id="nav-recommend">推薦專案</button>
+        <button id="nav-trending">熱門專案</button>
+    </nav>
+    <main>
+        <!-- 搜尋專案頁面 -->
+        <div id="search-page" class="page active">
+            <h2>搜尋專案</h2>
+            <div class="card">
+                <input type="text" id="search-input" placeholder="輸入專案名稱">
+                <button id="search-button">搜尋</button>
+                <div id="error-container" class="error"></div>
+                <ul id="project-list"></ul>
+            </div>
+        </div>
+
+        <!-- 推薦專案頁面 -->
+        <div id="recommend-page" class="page">
+            <h2>推薦專案</h2>
+            <button id="show-settings">設定推薦條件</button>
+            <div id="recommend-settings" class="settings-form hidden">
+                <label for="types">選擇語言:</label>
+                <select id="types">
+                    <option value="JavaScript">JavaScript</option>
+                    <option value="Python">Python</option>
+                    <option value="Java">Java</option>
+                    <option value="Ruby">Ruby</option>
+                    <option value="PHP">PHP</option>
+                    <option value="C++">C++</option>
+                    <option value="Go">Go</option>
+                    <option value="TypeScript">TypeScript</option>
+                    <option value="Swift">Swift</option>
+                    <option value="C#">C#</option>
+                </select>
+                <label for="stars">最少星數:</label>
+                <input type="number" id="stars" min="0" value="100">
+                <label for="forks">最少分支數:</label>
+                <input type="number" id="forks" min="0" value="50">
+                <button id="apply-settings">套用設定</button>
+            </div>
+            <div id="recommend-list"></div>
+        </div>
+
+        <!-- 熱門專案頁面 -->
+        <div id="trending-page" class="page">
+            <h2>熱門專案</h2>
+            <div class="card">
+                <ul id="trending-list"></ul>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Open IndexedDB
+        let db;
+        const request = indexedDB.open('recommendations', 1);
+
+        request.onupgradeneeded = function(event) {
+            db = event.target.result;
+            db.createObjectStore('settings', { keyPath: 'id' });
+        };
+
+        request.onsuccess = function(event) {
+            db = event.target.result;
+            loadSettings();
+        };
+
+        request.onerror = function(event) {
+            console.error('IndexedDB error:', event.target.errorCode);
+        };
+
+        function saveSettings(settings) {
+            const transaction = db.transaction(['settings'], 'readwrite');
+            const store = transaction.objectStore('settings');
+            store.put(settings);
+
+            transaction.oncomplete = function() {
+                console.log('Settings saved.');
+            };
+
+            transaction.onerror = function(event) {
+                console.error('Error saving settings:', event.target.errorCode);
+            };
+        }
+
+        function loadSettings() {
+            const transaction = db.transaction(['settings'], 'readonly');
+            const store = transaction.objectStore('settings');
+            const request = store.get(1);
+
+            request.onsuccess = function(event) {
+                const settings = event.target.result;
+                if (settings) {
+                    document.getElementById('types').value = settings.language;
+                    document.getElementById('stars').value = settings.stars;
+                    document.getElementById('forks').value = settings.forks;
+                    applyRecommendations(); // Apply saved settings
+                }
+            };
+
+            request.onerror = function(event) {
+                console.error('Error loading settings:', event.target.errorCode);
+            };
+        }
+
+        document.getElementById('nav-search').addEventListener('click', function() {
+            setActivePage('search-page');
+        });
+
+        document.getElementById('nav-recommend').addEventListener('click', function() {
+            setActivePage('recommend-page');
+        });
+
+        document.getElementById('nav-trending').addEventListener('click', function() {
+            setActivePage('trending-page');
+        });
+
+        function setActivePage(pageId) {
+            document.querySelectorAll('.page').forEach(function(page) {
+                page.classList.remove('active');
+            });
+            document.getElementById(pageId).classList.add('active');
+        }
+
+        // 搜尋專案
+        document.getElementById('search-button').addEventListener('click', function() {
+            const query = document.getElementById('search-input').value;
+            const url = `https://api.github.com/search/repositories?q=${encodeURIComponent(query)}&sort=stars&order=desc`;
+
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    const projects = data.items;
+                    const list = document.getElementById('project-list');
+                    list.innerHTML = '';
+
+                    if (projects.length === 0) {
+                        list.innerHTML = '<li>找不到相關專案</li>';
+                    } else {
+                        projects.forEach(project => {
+                            const item = document.createElement('li');
+                            item.className = 'project-item';
+                            item.innerHTML = `
+                                <a href="${project.html_url}" target="_blank">${project.name}</a>
+                                <span> - Stars: ${project.stargazers_count}, Forks: ${project.forks_count}</span>
+                            `;
+                            list.appendChild(item);
+                        });
+                    }
+                })
+                .catch(error => {
+                    document.getElementById('error-container').innerText = '搜尋過程中發生錯誤，請稍後再試。';
+                });
+        });
+
+        // 推薦專案
+        document.getElementById('show-settings').addEventListener('click', function() {
+            const settings = document.getElementById('recommend-settings');
+            settings.classList.toggle('hidden');
+        });
+
+        document.getElementById('apply-settings').addEventListener('click', function() {
+            const language = document.getElementById('types').value;
+            const minStars = document.getElementById('stars').value;
+            const minForks = document.getElementById('forks').value;
+
+            // Save settings to IndexedDB
+            saveSettings({
+                id: 1,
+                language: language,
+                stars: minStars,
+                forks: minForks
+            });
+
+            applyRecommendations(); // Apply settings immediately
+
+            // Hide the settings form
+            document.getElementById('recommend-settings').classList.add('hidden');
+        });
+
+        function applyRecommendations() {
+            const language = document.getElementById('types').value;
+            const minStars = document.getElementById('stars').value;
+            const minForks = document.getElementById('forks').value;
+
+            const url = `https://api.github.com/search/repositories?q=language:${encodeURIComponent(language)}+stars:>${minStars}+forks:>${minForks}&sort=stars&order=desc`;
+
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    const projects = data.items;
+                    const list = document.getElementById('recommend-list');
+                    list.innerHTML = '';
+
+                    if (projects.length === 0) {
+                        list.innerHTML = '<p>沒有符合條件的專案</p>';
+                    } else {
+                        projects.forEach(project => {
+                            const item = document.createElement('div');
+                            item.className = 'project-item';
+                            item.innerHTML = `
+                                <a href="${project.html_url}" target="_blank">${project.name}</a>
+                                <span> - Stars: ${project.stargazers_count}, Forks: ${project.forks_count}</span>
+                            `;
+                            list.appendChild(item);
+                        });
+                    }
+                })
+                .catch(error => {
+                    alert('推薦過程中發生錯誤，請稍後再試。');
+                });
+        }
+
+        // 熱門專案
+        document.addEventListener('DOMContentLoaded', function() {
+            const url = 'https://api.github.com/repositories?since=365';
+
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    const list = document.getElementById('trending-list');
+                    list.innerHTML = '';
+
+                    data.forEach(project => {
+                        const item = document.createElement('li');
+                        item.className = 'project-item';
+                        item.innerHTML = `
+                            <a href="${project.html_url}" target="_blank">${project.name}</a>
+                            <span> - Stars: ${project.stargazers_count}, Forks: ${project.forks_count}</span>
+                        `;
+                        list.appendChild(item);
+                    });
+                })
+                .catch(error => {
+                    document.getElementById('trending-list').innerText = '無法加載熱門專案，請稍後再試。';
+                });
+        });
+    </script>
+</body>
+</html>
