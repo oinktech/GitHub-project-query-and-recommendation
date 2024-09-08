@@ -3,66 +3,69 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" type="image/x-icon" href="https://oinktech.github.io/images/favicon.ico">
     <title>GitHub 專案查詢與推薦</title>
     <link href="https://unpkg.com/boxicons/css/boxicons.min.css" rel="stylesheet">
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background: linear-gradient(135deg, #283c45 0%, #1a1f24 100%);
-            color: #ffffff;
-            margin: 0;
-            padding: 0;
-            transition: background 0.5s;
+          font-family: Arial, sans-serif;
+          background: linear-gradient(135deg, #283c45 0%, #1a1f24 100%);
+          color: #ffffff;
+          margin: 0;
+          padding: 0;
+          transition: background 0.5s;
         }
-
+        
         header {
-            background-color: #61dafb;
-            color: #282c34;
-            padding: 15px;
-            text-align: center;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            transition: background-color 0.5s;
+          background-color: #61dafb;
+          color: #282c34;
+          padding: 15px;
+          text-align: center;
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+          transition: background-color 0.5s;
         }
-
+        
         nav {
-            display: flex;
-            justify-content: center;
-            margin: 20px;
+          display: flex;
+          justify-content: center;
+          margin: 20px;
         }
-
         nav button {
-            background: linear-gradient(135deg, #61dafb, #21a1f1);
-            border: none;
-            color: #282c34;
-            padding: 12px 25px;
-            margin: 0 8px;
-            cursor: pointer;
-            border-radius: 30px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
-            transition: background 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
-            font-size: 16px;
-            font-weight: bold;
-            letter-spacing: 0.5px;
+          background: linear-gradient(135deg, #61dafb, #21a1f1);
+          border: none;
+          color: #282c34;
+          padding: 12px 25px;
+          margin: 0 8px;
+          cursor: pointer;
+          border-radius: 30px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+          transition: background 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+          font-size: 16px;
+          font-weight: bold;
+          letter-spacing: 0.5px;
         }
-
+        
         nav button.active {
-            background: linear-gradient(135deg, #21a1f1, #1c88da);
-            color: white;
+          background: linear-gradient(135deg, #21a1f1, #1c88da);
+          color: white;
         }
-
+        
         nav button:hover {
-            background: linear-gradient(135deg, #21a1f1, #0b79d1);
-            box-shadow: 0 8px 18px rgba(0, 0, 0, 0.3);
-            transform: translateY(-2px);
+          background: linear-gradient(135deg, #21a1f1, #0b79d1);
+          box-shadow: 0 8px 18px rgba(0, 0, 0, 0.3);
+          transform: translateY(-2px);
         }
-
         nav button:active {
             background: linear-gradient(135deg, #1c88da, #1767b4);
             transform: translateY(1px);
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        main {
+            padding: 20px;
         }
 
         .page {
@@ -78,7 +81,6 @@
             from { opacity: 0; }
             to { opacity: 1; }
         }
-
         .card {
             background-color: #2b2b2b;
             border-radius: 10px;
@@ -109,7 +111,6 @@
             outline: none;
             background-color: #444;
         }
-
         button, .settings-form button {
             background: linear-gradient(135deg, #61dafb, #21a1f1);
             padding: 12px 25px;
@@ -140,7 +141,6 @@
         .hidden {
             display: none;
         }
-
         .settings-form {
             background-color: #2b2b2b;
             border-radius: 10px;
@@ -157,6 +157,45 @@
             margin-top: 10px;
             color: #ffffff;
         }
+        #search-results {
+            margin-top: 20px;
+        }
+
+        .search-results-item, .project-item {
+            background-color: #3a3a3a;
+            border: 1px solid #444;
+            border-radius: 10px;
+            margin: 10px 0;
+            padding: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            transition: background-color 0.3s, box-shadow 0.3s;
+            display: flex;
+            align-items: center;
+        }
+
+        .search-results-item img, .project-item img {
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+
+        .search-results-item a, .project-item a {
+            color: #61dafb;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .search-results-item a:hover, .project-item a:hover {
+            text-decoration: underline;
+            color: #0b79d1;
+        }
+
+        .search-results-item span, .project-item span {
+            color: #888888;
+            font-size: 14px;
+            display: block;
+            margin-top: 5px;
+        }
 
         .settings-form select, .settings-form input[type="checkbox"] {
             margin-top: 10px;
@@ -170,12 +209,11 @@
             box-sizing: border-box;
             transition: border-color 0.3s, background-color 0.3s;
         }
-
         .settings-form input[type="checkbox"] {
             width: auto;
             margin-right: 10px;
         }
-
+        
         .icon {
             width: 24px;
             height: 24px;
@@ -185,36 +223,68 @@
             align-items: center;
             justify-content: center;
         }
-
+        
         .settings-form p {
             color: #61dafb;
         }
-
+        
         .error {
             color: #e74c3c;
             font-size: 16px;
         }
-
-        .project-item {
-            background-color: #3a3a3a;
+        
+        .sorting-controls {
+            text-align: center;
+            margin: 20px 0;
+        }
+        
+        .sorting-controls label {
+            color: #ffffff;
+            margin-right: 10px;
+        }
+        
+        .sorting-controls select {
+            padding: 8px;
             border-radius: 8px;
-            margin: 10px 0;
-            padding: 15px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border: 1px solid #61dafb;
+            background-color: #333;
+            color: #ffffff;
+            font-size: 16px;
         }
-
-        .project-item a {
-            color: #61dafb;
-            text-decoration: none;
+        .avatar {
+            width: 40px; 
+            height: 40px; 
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+        .load-more-button {
+            background: linear-gradient(135deg, #61dafb, #21a1f1);
+            border: none;
+            color: #282c34;
+            padding: 12px 25px;
+            margin: 20px 0;
+            cursor: pointer;
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+            transition: background 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+            font-size: 16px;
             font-weight: bold;
+            letter-spacing: 0.5px;
         }
-
-        .project-item a:hover {
-            text-decoration: underline;
+        
+        .load-more-button:hover {
+            background: linear-gradient(135deg, #21a1f1, #0b79d1);
+            box-shadow: 0 8px 18px rgba(0, 0, 0, 0.3);
+            transform: translateY(-2px);
         }
-
-        .project-item span {
-            color: #888888;
+        
+        .load-more-button:active {
+            background: linear-gradient(135deg, #1c88da, #1767b4);
+            transform: translateY(1px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
         }
     </style>
 </head>
@@ -222,243 +292,262 @@
     <header>
         <h1>GitHub 專案查詢與推薦</h1>
     </header>
+
     <nav>
-        <button id="nav-search">搜尋專案</button>
-        <button id="nav-recommend">推薦專案</button>
-        <button id="nav-trending">熱門專案</button>
+        <button id="search-tab" class="active">搜尋專案</button>
+        <button id="trending-tab">熱門專案</button>
+        <button id="recommendations-tab">推薦專案</button>
     </nav>
+
     <main>
-        <!-- 搜尋專案頁面 -->
+        <!-- 搜尋專案 -->
         <div id="search-page" class="page active">
-            <h2>搜尋專案</h2>
-            <div class="card">
-                <input type="text" id="search-input" placeholder="輸入專案名稱">
-                <button id="search-button">搜尋</button>
-                <div id="error-container" class="error"></div>
-                <ul id="project-list"></ul>
-            </div>
+            <input type="text" id="search-query" placeholder="輸入搜尋關鍵字">
+            <button id="search-button">搜尋</button>
+            <div id="search-results"></div>
         </div>
 
-        <!-- 推薦專案頁面 -->
-        <div id="recommend-page" class="page">
-            <h2>推薦專案</h2>
-            <button id="show-settings">設定推薦條件</button>
-            <div id="recommend-settings" class="settings-form hidden">
-                <label for="types">選擇語言:</label>
+        <!-- 熱門專案 -->
+        <div id="trending-page" class="page">
+            <div class="sorting-controls">
+                <label for="sort-by">排序方式：</label>
+                <select id="sort-by">
+                    <option value="stars">按星標排序</option>
+                    <option value="forks">按分支排序</option>
+                </select>
+            </div>
+            <button id="load-trending" class="load-more-button">載入更多熱門專案</button>
+            <div id="trending-loading" class="hidden">載入中...</div>
+            <ul id="trending-list"></ul>
+            <button id="load-more-trending" class="load-more-button hidden">顯示更多熱門專案</button>
+        </div>
+
+        <!-- 推薦專案 -->
+        <div id="recommendations-page" class="page">
+            <div class="settings-form">
+                <label for="types">程式語言：</label>
                 <select id="types">
                     <option value="JavaScript">JavaScript</option>
                     <option value="Python">Python</option>
                     <option value="Java">Java</option>
-                    <option value="Ruby">Ruby</option>
-                    <option value="PHP">PHP</option>
-                    <option value="C++">C++</option>
-                    <option value="Go">Go</option>
-                    <option value="TypeScript">TypeScript</option>
-                    <option value="Swift">Swift</option>
-                    <option value="C#">C#</option>
+                     <option value="HTML">Html</option>
+                    <!-- 可以根據需要添加更多選項 -->
                 </select>
-                <label for="stars">最少星數:</label>
-                <input type="number" id="stars" min="0" value="100">
-                <label for="forks">最少分支數:</label>
-                <input type="number" id="forks" min="0" value="50">
-                <button id="apply-settings">套用設定</button>
+                <label for="stars">最少星標數：</label>
+                <input type="number" id="stars" value="100">
+                <label for="forks">最少分支數：</label>
+                <input type="number" id="forks" value="50">
+                <button id="recommend-button">獲取推薦專案</button>
             </div>
+            <div id="recommend-loading" class="hidden">載入中...</div>
             <div id="recommend-list"></div>
-        </div>
-
-        <!-- 熱門專案頁面 -->
-        <div id="trending-page" class="page">
-            <h2>熱門專案</h2>
-            <div class="card">
-                <ul id="trending-list"></ul>
-            </div>
+            <button id="load-more-recommendations" class="load-more-button hidden">顯示更多推薦專案</button>
         </div>
     </main>
 
     <script>
-        // Open IndexedDB
-        let db;
-        const request = indexedDB.open('recommendations', 1);
+        document.addEventListener('DOMContentLoaded', () => {
+            const searchButton = document.getElementById('search-button');
+            const searchPage = document.getElementById('search-page');
+            const trendingPage = document.getElementById('trending-page');
+            const recommendationsPage = document.getElementById('recommendations-page');
+            const searchTab = document.getElementById('search-tab');
+            const trendingTab = document.getElementById('trending-tab');
+            const recommendationsTab = document.getElementById('recommendations-tab');
+            const loadTrendingButton = document.getElementById('load-trending');
+            const recommendButton = document.getElementById('recommend-button');
+            const loadMoreTrendingButton = document.getElementById('load-more-trending');
+            const loadMoreRecommendationsButton = document.getElementById('load-more-recommendations');
+            let trendingPageNum = 1;
+            let recommendPageNum = 1;
 
-        request.onupgradeneeded = function(event) {
-            db = event.target.result;
-            db.createObjectStore('settings', { keyPath: 'id' });
-        };
+            function showPage(pageId) {
+                searchPage.classList.remove('active');
+                trendingPage.classList.remove('active');
+                recommendationsPage.classList.remove('active');
+                searchTab.classList.remove('active');
+                trendingTab.classList.remove('active');
+                recommendationsTab.classList.remove('active');
 
-        request.onsuccess = function(event) {
-            db = event.target.result;
-            loadSettings();
-        };
-
-        request.onerror = function(event) {
-            console.error('IndexedDB error:', event.target.errorCode);
-        };
-
-        function saveSettings(settings) {
-            const transaction = db.transaction(['settings'], 'readwrite');
-            const store = transaction.objectStore('settings');
-            store.put(settings);
-
-            transaction.oncomplete = function() {
-                console.log('Settings saved.');
-            };
-
-            transaction.onerror = function(event) {
-                console.error('Error saving settings:', event.target.errorCode);
-            };
-        }
-
-        function loadSettings() {
-            const transaction = db.transaction(['settings'], 'readonly');
-            const store = transaction.objectStore('settings');
-            const request = store.get(1);
-
-            request.onsuccess = function(event) {
-                const settings = event.target.result;
-                if (settings) {
-                    document.getElementById('types').value = settings.language;
-                    document.getElementById('stars').value = settings.stars;
-                    document.getElementById('forks').value = settings.forks;
-                    applyRecommendations(); // Apply saved settings
+                if (pageId === 'search-page') {
+                    searchPage.classList.add('active');
+                    searchTab.classList.add('active');
+                } else if (pageId === 'trending-page') {
+                    trendingPage.classList.add('active');
+                    trendingTab.classList.add('active');
+                } else if (pageId === 'recommendations-page') {
+                    recommendationsPage.classList.add('active');
+                    recommendationsTab.classList.add('active');
                 }
-            };
+            }
 
-            request.onerror = function(event) {
-                console.error('Error loading settings:', event.target.errorCode);
-            };
-        }
+            searchTab.addEventListener('click', () => showPage('search-page'));
+            trendingTab.addEventListener('click', () => showPage('trending-page'));
+            recommendationsTab.addEventListener('click', () => showPage('recommendations-page'));
 
-        document.getElementById('nav-search').addEventListener('click', function() {
-            setActivePage('search-page');
-        });
-
-        document.getElementById('nav-recommend').addEventListener('click', function() {
-            setActivePage('recommend-page');
-        });
-
-        document.getElementById('nav-trending').addEventListener('click', function() {
-            setActivePage('trending-page');
-        });
-
-        function setActivePage(pageId) {
-            document.querySelectorAll('.page').forEach(function(page) {
-                page.classList.remove('active');
-            });
-            document.getElementById(pageId).classList.add('active');
-        }
-
-        // 搜尋專案
-        document.getElementById('search-button').addEventListener('click', function() {
-            const query = document.getElementById('search-input').value;
-            const url = `https://api.github.com/search/repositories?q=${encodeURIComponent(query)}&sort=stars&order=desc`;
-
-            fetch(url)
-                .then(response => response.json())
-                .then(data => {
-                    const projects = data.items;
-                    const list = document.getElementById('project-list');
-                    list.innerHTML = '';
-
-                    if (projects.length === 0) {
-                        list.innerHTML = '<li>找不到相關專案</li>';
-                    } else {
-                        projects.forEach(project => {
-                            const item = document.createElement('li');
-                            item.className = 'project-item';
-                            item.innerHTML = `
-                                <a href="${project.html_url}" target="_blank">${project.name}</a>
-                                <span> - Stars: ${project.stargazers_count}, Forks: ${project.forks_count}</span>
-                            `;
-                            list.appendChild(item);
-                        });
-                    }
-                })
-                .catch(error => {
-                    document.getElementById('error-container').innerText = '搜尋過程中發生錯誤，請稍後再試。';
-                });
-        });
-
-        // 推薦專案
-        document.getElementById('show-settings').addEventListener('click', function() {
-            const settings = document.getElementById('recommend-settings');
-            settings.classList.toggle('hidden');
-        });
-
-        document.getElementById('apply-settings').addEventListener('click', function() {
-            const language = document.getElementById('types').value;
-            const minStars = document.getElementById('stars').value;
-            const minForks = document.getElementById('forks').value;
-
-            // Save settings to IndexedDB
-            saveSettings({
-                id: 1,
-                language: language,
-                stars: minStars,
-                forks: minForks
+            searchButton.addEventListener('click', () => {
+                const query = document.getElementById('search-query').value;
+                if (query.trim()) {
+                    performSearch(query);
+                }
             });
 
-            applyRecommendations(); // Apply settings immediately
+            loadTrendingButton.addEventListener('click', () => {
+                trendingPageNum++;
+                loadTrendingProjects(document.getElementById('sort-by').value, trendingPageNum);
+            });
 
-            // Hide the settings form
-            document.getElementById('recommend-settings').classList.add('hidden');
-        });
+            recommendButton.addEventListener('click', () => {
+                recommendPageNum = 1;
+                applyRecommendations();
+            });
 
-        function applyRecommendations() {
-            const language = document.getElementById('types').value;
-            const minStars = document.getElementById('stars').value;
-            const minForks = document.getElementById('forks').value;
+            loadMoreTrendingButton.addEventListener('click', () => {
+                trendingPageNum++;
+                loadTrendingProjects(document.getElementById('sort-by').value, trendingPageNum);
+            });
 
-            const url = `https://api.github.com/search/repositories?q=language:${encodeURIComponent(language)}+stars:>${minStars}+forks:>${minForks}&sort=stars&order=desc`;
+            loadMoreRecommendationsButton.addEventListener('click', () => {
+                recommendPageNum++;
+                applyRecommendations(recommendPageNum);
+            });
 
-            fetch(url)
-                .then(response => response.json())
-                .then(data => {
-                    const projects = data.items;
-                    const list = document.getElementById('recommend-list');
-                    list.innerHTML = '';
+            function performSearch(query) {
+                const url = `https://api.github.com/search/repositories?q=${encodeURIComponent(query)}&sort=stars&order=desc`;
 
-                    if (projects.length === 0) {
-                        list.innerHTML = '<p>沒有符合條件的專案</p>';
-                    } else {
-                        projects.forEach(project => {
-                            const item = document.createElement('div');
-                            item.className = 'project-item';
-                            item.innerHTML = `
-                                <a href="${project.html_url}" target="_blank">${project.name}</a>
-                                <span> - Stars: ${project.stargazers_count}, Forks: ${project.forks_count}</span>
+                document.getElementById('search-results').innerHTML = '<p class="loading">載入中...</p>';
+
+                fetch(url)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok.');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        const resultsContainer = document.getElementById('search-results');
+                        resultsContainer.innerHTML = '';
+
+                        if (data.items.length === 0) {
+                            resultsContainer.innerHTML = '<p>未找到符合條件的專案</p>';
+                            return;
+                        }
+
+                        data.items.forEach(item => {
+                            const resultItem = document.createElement('div');
+                            resultItem.className = 'search-results-item';
+                            resultItem.innerHTML = `
+                                <img src="${item.owner.avatar_url}" alt="Owner Avatar" class="avatar">
+                                <a href="${item.html_url}" target="_blank">${item.name}</a>
+                                <span> - 擁有者: ${item.owner.login}, Stars: ${item.stargazers_count}, Forks: ${item.forks_count}</span>
                             `;
-                            list.appendChild(item);
+                            resultsContainer.appendChild(resultItem);
                         });
-                    }
-                })
-                .catch(error => {
-                    alert('推薦過程中發生錯誤，請稍後再試。');
-                });
-        }
-
-        // 熱門專案
-        document.addEventListener('DOMContentLoaded', function() {
-            const url = 'https://api.github.com/repositories?since=365';
-
-            fetch(url)
-                .then(response => response.json())
-                .then(data => {
-                    const list = document.getElementById('trending-list');
-                    list.innerHTML = '';
-
-                    data.forEach(project => {
-                        const item = document.createElement('li');
-                        item.className = 'project-item';
-                        item.innerHTML = `
-                            <a href="${project.html_url}" target="_blank">${project.name}</a>
-                            <span> - Stars: ${project.stargazers_count}, Forks: ${project.forks_count}</span>
-                        `;
-                        list.appendChild(item);
+                    })
+                    .catch(error => {
+                        document.getElementById('search-results').innerHTML = `<p class="error">無法加載搜尋結果，請稍後再試。錯誤：${error.message}</p>`;
                     });
-                })
-                .catch(error => {
-                    document.getElementById('trending-list').innerText = '無法加載熱門專案，請稍後再試。';
-                });
+            }
+
+            function loadTrendingProjects(sortBy, page = 1) {
+                const url = `https://api.github.com/search/repositories?q=created:>2023-01-01&sort=${sortBy}&order=desc&page=${page}&per_page=10`;
+
+                document.getElementById('trending-loading').classList.remove('hidden');
+
+                fetch(url)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok.');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        const list = document.getElementById('trending-list');
+                        document.getElementById('trending-loading').classList.add('hidden');
+
+                        if (page === 1) {
+                            list.innerHTML = ''; // Clear existing items if this is the first page
+                        }
+
+                        if (data.items.length === 0 && page === 1) {
+                            list.innerHTML = '<li>無法加載熱門專案</li>';
+                        } else {
+                            data.items.forEach(item => {
+                                const listItem = document.createElement('li');
+                                listItem.className = 'project-item';
+                                listItem.innerHTML = `
+                                    <img src="${item.owner.avatar_url}" alt="Owner Avatar" class="avatar">
+                                    <a href="${item.html_url}" target="_blank">${item.name}</a>
+                                    <span> - 擁有者: ${item.owner.login}, Stars: ${item.stargazers_count}, Forks: ${item.forks_count}</span>
+                                `;
+                                list.appendChild(listItem);
+                            });
+                        }
+
+                        if (data.items.length === 10) {
+                            loadMoreTrendingButton.classList.remove('hidden');
+                        } else {
+                            loadMoreTrendingButton.classList.add('hidden');
+                        }
+                    })
+                    .catch(error => {
+                        document.getElementById('trending-loading').classList.add('hidden');
+                        loadMoreTrendingButton.classList.add('hidden');
+                        document.getElementById('trending-list').innerHTML = `<li class="error">無法加載熱門專案，請稍後再試。錯誤：${error.message}</li>`;
+                    });
+            }
+
+            function applyRecommendations(page = 1) {
+                const language = document.getElementById('types').value;
+                const stars = document.getElementById('stars').value;
+                const forks = document.getElementById('forks').value;
+
+                const url = `https://api.github.com/search/repositories?q=language:${encodeURIComponent(language)}+stars:>${stars}+forks:>${forks}&sort=stars&order=desc&page=${page}&per_page=10`;
+
+                document.getElementById('recommend-loading').classList.remove('hidden');
+
+                fetch(url)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok.');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        const list = document.getElementById('recommend-list');
+                        document.getElementById('recommend-loading').classList.add('hidden');
+
+                        if (page === 1) {
+                            list.innerHTML = ''; // Clear existing items if this is the first page
+                        }
+
+                        if (data.items.length === 0 && page === 1) {
+                            list.innerHTML = '<p>未找到符合條件的推薦專案</p>';
+                        } else {
+                            data.items.forEach(item => {
+                                const listItem = document.createElement('div');
+                                listItem.className = 'project-item';
+                                listItem.innerHTML = `
+                                    <img src="${item.owner.avatar_url}" alt="Owner Avatar" class="avatar">
+                                    <a href="${item.html_url}" target="_blank">${item.name}</a>
+                                    <span> - 擁有者: ${item.owner.login}, Stars: ${item.stargazers_count}, Forks: ${item.forks_count}</span>
+                                `;
+                                list.appendChild(listItem);
+                            });
+                        }
+
+                        if (data.items.length === 10) {
+                            loadMoreRecommendationsButton.classList.remove('hidden');
+                        } else {
+                            loadMoreRecommendationsButton.classList.add('hidden');
+                        }
+                    })
+                    .catch(error => {
+                        document.getElementById('recommend-loading').classList.add('hidden');
+                        loadMoreRecommendationsButton.classList.add('hidden');
+                        document.getElementById('recommend-list').innerHTML = `<p class="error">無法加載推薦專案，請稍後再試。錯誤：${error.message}</p>`;
+                    });
+            }
         });
     </script>
 </body>
